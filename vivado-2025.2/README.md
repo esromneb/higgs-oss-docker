@@ -23,3 +23,26 @@ Run Vivado in the completed image:
 ```sh
 docker run --rm -it -v "$PWD:/work" localhost/vivado-2025.2:v1 vivado
 ```
+
+The default account is the non-root `user`, with passwordless `sudo` and a
+home directory at `/home/user`. SSH is configured for public-key
+authentication, with password and root login disabled. Add a public key before
+exposing the container:
+
+```sh
+docker cp ~/.ssh/id_ed25519.pub CONTAINER:/tmp/id_ed25519.pub
+docker exec CONTAINER sudo sh -c \
+  'cat /tmp/id_ed25519.pub >> /home/user/.ssh/authorized_keys &&
+   chown user:user /home/user/.ssh/authorized_keys &&
+   chmod 600 /home/user/.ssh/authorized_keys'
+```
+
+Start SSH explicitly as root when needed:
+
+```sh
+docker exec --user root CONTAINER start-sshd
+```
+
+For a dedicated SSH container, run
+`docker run --user root -p 2222:22 ... start-sshd`, then connect using
+`ssh -p 2222 user@localhost`.

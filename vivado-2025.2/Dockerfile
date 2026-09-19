@@ -68,9 +68,32 @@ RUN ./extracted/xsetup \
 
 FROM base AS final
 
+RUN apt-get update && apt-get install -y --no-install-recommends openssh-server && \
+    rm -rf /var/lib/apt/lists/* /etc/ssh/ssh_host_*_key* && \
+    useradd --create-home --shell /bin/bash --groups dialout user && \
+    install -d -m 0700 -o user -g user /home/user/.ssh && \
+    install -m 0600 -o user -g user /dev/null /home/user/.ssh/authorized_keys && \
+    printf '%s\n' \
+        'user ALL=(ALL) NOPASSWD:ALL' \
+        > /etc/sudoers.d/user && \
+    chmod 0440 /etc/sudoers.d/user && \
+    visudo -cf /etc/sudoers.d/user && \
+    printf '%s\n' \
+        'PasswordAuthentication no' \
+        'PermitRootLogin no' \
+        'PubkeyAuthentication yes' \
+        > /etc/ssh/sshd_config.d/user.conf
+
 COPY --from=build /opt/amd /opt/amd
+COPY --chmod=0555 vivado-2025.2/start-sshd.sh /usr/local/bin/start-sshd
 
 ENV XILINX_VIVADO=/opt/amd/2025.2/Vivado
 ENV PATH=${XILINX_VIVADO}/bin:${PATH}
+ENV HOME=/home/user
 
-WORKDIR /work
+USER user
+WORKDIR /home/user
+
+EXPOSE 22
+
+CMD ["bash"]
