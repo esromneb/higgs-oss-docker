@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM ubuntu:noble-20260911 AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -8,6 +9,7 @@ ENV LC_ALL=en_US.UTF-8
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
+        expect \
         file \
         libasound2t64 \
         libfontconfig1 \
@@ -44,12 +46,20 @@ WORKDIR /tmp/vivado-installer
 
 COPY common/vivado/FPGAs_AdaptiveSoCs_Unified_SDI_2025.2_1114_2157_Lin64.bin ./
 COPY common/vivado/md5.txt ./
+COPY --chmod=0555 vivado-2025.2/amd-auth-token.exp /usr/local/bin/amd-auth-token.exp
 
 RUN md5sum --check md5.txt && \
     chmod +x FPGAs_AdaptiveSoCs_Unified_SDI_2025.2_1114_2157_Lin64.bin && \
     ./FPGAs_AdaptiveSoCs_Unified_SDI_2025.2_1114_2157_Lin64.bin \
-        --nox11 --noexec --keep --target extracted && \
-    ./extracted/xsetup \
+        --nox11 --noexec --keep --target extracted
+
+RUN --mount=type=secret,id=amd_credentials,target=/tmp/amd-credentials.exp,mode=0400 \
+    amd-auth-token.exp ./extracted/xsetup /tmp/amd-credentials.exp
+
+RUN ./extracted/xsetup --batch ConfigGen > /tmp/configgen.log 2>&1 && \
+    cat install_config.txt
+
+RUN ./extracted/xsetup \
         --agree XilinxEULA,3rdPartyEULA \
         --batch Install \
         --product Vivado \

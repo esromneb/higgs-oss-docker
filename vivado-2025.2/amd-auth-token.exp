@@ -1,0 +1,35 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+log_user 0
+
+set xsetup [lindex $argv 0]
+set credentials_file [lindex $argv 1]
+
+if {![file isfile $credentials_file]} {
+    puts stderr "Credentials file not found: $credentials_file"
+    exit 2
+}
+
+source $credentials_file
+
+spawn $xsetup -b AuthTokenGen
+expect {
+    "E-mail Address:" {
+        send -- "$amd_email\r"
+        exp_continue
+    }
+    "Password:" {
+        send -- "$amd_password\r"
+        exp_continue
+    }
+    "Saved authentication token file successfully" {
+        exit 0
+    }
+    eof {
+        exit 1
+    }
+    timeout {
+        exit 1
+    }
+}

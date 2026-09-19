@@ -6,6 +6,10 @@ Build from this directory:
 make
 ```
 
+Before building, replace the two placeholder values in `amd-credentials.exp`.
+This two-line credentials file is ignored by Git and is mounted only for the
+authentication build step; it is not copied into an image layer.
+
 The build context is the repository root so the Dockerfile can consume the
 untracked AMD installer at
 `common/vivado/FPGAs_AdaptiveSoCs_Unified_SDI_2025.2_1114_2157_Lin64.bin`.
