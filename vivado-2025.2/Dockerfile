@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6 \
         libice6 \
         libnss3 \
+        libpixman-1-0 \
         libsm6 \
         libtinfo6 \
         libx11-6 \
@@ -32,6 +33,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
         x11-utils \
         xauth \
+        iproute2 \
+        nano \
+        curl \
+        wget \
         zip && \
     locale-gen en_US.UTF-8 && \
     rm -rf /var/lib/apt/lists/*

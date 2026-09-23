@@ -1,4 +1,4 @@
 Product=Vivado
 Edition=Vivado ML Standard
 Destination=/opt/amd
-Modules=Kintex UltraScale:1,Virtex UltraScale:1,Kintex UltraScale+:1,Virtex UltraScale+:1
+Modules=Kintex UltraScale:1,Virtex UltraScale:1,Kintex UltraScale+:1,Virtex UltraScale+:1,Zynq UltraScale+ MPSoCs:1
