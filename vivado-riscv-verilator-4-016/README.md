@@ -16,10 +16,10 @@ as the published source image, then copied into the Vivado-based final image.
 The RISC-V compiler is available through `PATH` with `RISCV=/opt/riscv`.
 Verilator is installed under `/usr/local`.
 
-`higgs_sdr_rev2` is copied into `/home/user/work/higgs_sdr_rev2` while the
+`higgs_sdr_rev2` is copied into `/home/ubuntu/work/higgs_sdr_rev2` while the
 image is built. Exercise the RISC-V firmware and Verilator build with:
 
 ```sh
 docker run --rm -it localhost/vivado-riscv-verilator-4-016:v1 \
-  make -C /home/user/work/higgs_sdr_rev2/sim/verilator/test_ring_simple pre_work
+  make -C /home/ubuntu/work/higgs_sdr_rev2/sim/verilator/test_ring_simple pre_work
 ```

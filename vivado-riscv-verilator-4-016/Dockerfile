@@ -47,21 +47,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV RISCV=/opt/riscv
 ENV PATH=${RISCV}/bin:${PATH}
 
-COPY --from=higgs_sdr_rev2 --chown=user:user . /home/user/work/higgs_sdr_rev2
+COPY --from=higgs_sdr_rev2 --chown=ubuntu:ubuntu . /home/ubuntu/work/higgs_sdr_rev2
 
 RUN sed -i \
         -e 's|addr/4|addr//4|g' \
         -e 's|consume/2|consume//2|g' \
-        /home/user/work/higgs_sdr_rev2/libs/riscv-baseband/scripts/hex2mif.py && \
+        /home/ubuntu/work/higgs_sdr_rev2/libs/riscv-baseband/scripts/hex2mif.py && \
     sed -i \
         -e 's|V_MEM_START/4|V_MEM_START//4|g' \
         -e 's|V_MEM_LEN)/4|V_MEM_LEN)//4|g' \
         -e 's|address / 4|address // 4|g' \
         -e 's|index / 8|index // 8|g' \
-        /home/user/work/higgs_sdr_rev2/libs/riscv-baseband/scripts/hex2mif_vmem.py && \
+        /home/ubuntu/work/higgs_sdr_rev2/libs/riscv-baseband/scripts/hex2mif_vmem.py && \
     sed -i '/#include <vector>/a#include <cstdint>' \
-        /home/user/work/higgs_sdr_rev2/libs/s-modem/soapy/src/common/FileUtils.hpp
+        /home/ubuntu/work/higgs_sdr_rev2/libs/s-modem/soapy/src/common/FileUtils.hpp
 
-USER user
+USER ubuntu
 
-WORKDIR /home/user/work
+WORKDIR /home/ubuntu/work
