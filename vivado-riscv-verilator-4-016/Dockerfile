@@ -47,6 +47,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV RISCV=/opt/riscv
 ENV PATH=${RISCV}/bin:${PATH}
 
+RUN printf '%s\n' 'export RISCV=/opt/riscv' >> /home/ubuntu/.bashrc
+
 USER ubuntu
 
 WORKDIR /home/ubuntu
