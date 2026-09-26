@@ -1,0 +1,34 @@
+define(`VIVADO_PACKAGES', `        build-essential \
+        ca-certificates \
+        expect \
+        file \
+        libasound2t64 \
+        libfontconfig1 \
+        libfreetype6 \
+        libice6 \
+        libnss3 \
+        libpixman-1-0 \
+        libsm6 \
+        libtinfo6 \
+        libx11-6 \
+        libxext6 \
+        libxi6 \
+        libxrandr2 \
+        libxrender1 \
+        libxtst6 \
+        locales \
+        make \
+        sudo \
+        tar \
+        unzip \
+        wget \
+        x11-utils \
+        xauth \
+        iproute2 \
+        nano \
+        curl \
+        wget \
+        git \
+        ripgrep \
+        zip')dnl
+define(`VIVADO_FINAL_PACKAGES', `openssh-server')dnl

@@ -4,17 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG VERILATOR_VERSION=v4.016
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        autoconf \
-        bison \
-        build-essential \
-        ca-certificates \
-        flex \
-        gcc \
-        g++ \
-        gperf \
-        git \
-        libfl-dev \
-        make && \
+VERILATOR_BUILD_PACKAGES && \
     git clone https://github.com/verilator/verilator.git /tmp/verilator && \
     cd /tmp/verilator && \
     git checkout "${VERILATOR_VERSION}" && \
@@ -24,4 +14,3 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make -j2 && \
     make install && \
     rm -rf /tmp/verilator /var/lib/apt/lists/*
-
