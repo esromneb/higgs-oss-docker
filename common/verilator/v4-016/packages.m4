@@ -13,6 +13,7 @@ define(`VERILATOR_PACKAGES', `        bsdextrautils \
         build-essential \
         ca-certificates \
         cmake \
+        cppzmq-dev \
         g++ \
         gdb \
         git \
@@ -23,5 +24,6 @@ define(`VERILATOR_PACKAGES', `        bsdextrautils \
         nodejs \
         perl \
         python-is-python3 \
+        python3.12-venv \
         ripgrep \
         zlib1g-dev')dnl
