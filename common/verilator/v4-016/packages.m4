@@ -17,6 +17,7 @@ define(`VERILATOR_PACKAGES', `        bsdextrautils \
         g++ \
         gdb \
         git \
+        libevent-dev \
         libfl2 \
         libmpc3 \
         libzmq3-dev \
