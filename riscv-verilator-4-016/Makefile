@@ -3,7 +3,7 @@
 .PHONY: all dockerfile clean
 
 all: Dockerfile
-	docker build --progress=plain -t localhost/riscv-verilator-4-016:v1 .
+	docker build --progress=plain --build-arg UBUNTU_UID=1000 -t localhost/riscv-verilator-4-016:v1 .
 
 dockerfile: Dockerfile
 
