@@ -1,0 +1,50 @@
+# When making a new file
+# copy and replace all occurances of the following
+#                    #####################
+name: Build and push riscv-verilator-4-222
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-riscv-verilator-4-222:
+    name: Build and push riscv-verilator-4-222
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Get dockerfile repo
+        uses: actions/checkout@v2
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        working-directory: ./riscv-verilator-4-222
+        run: |
+          make dockerfile
+          TAG=$(date -u +%Y%m%d%H%M%S)
+          docker build . --tag ghcr.io/${{github.repository}}/riscv-verilator-4-222:$TAG
+          docker push ghcr.io/${{github.repository}}/riscv-verilator-4-222:$TAG
+          docker tag ghcr.io/${{github.repository}}/riscv-verilator-4-222:$TAG ghcr.io/${{github.repository}}/riscv-verilator-4-222:latest
+          docker push ghcr.io/${{github.repository}}/riscv-verilator-4-222:latest
